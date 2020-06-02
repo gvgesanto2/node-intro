@@ -31,14 +31,28 @@ const writeProductsInFile = (filePath, products, errorHandler) => {
 }
 
 class Product {
-  constructor(title) {
+  constructor(id, title, imageUrl, price, description) {
+    this.id = id;
     this.title = title;
+    this.imageUrl = imageUrl;
+    this.description = description;
+    this.price = price;
   }
 
   save() {
     getProductsFromFile(productDataPath, products => {
-      products.push(this);
-      writeProductsInFile(productDataPath, products);
+      if(this.id) {
+        const existingProductIndex = products.findIndex(
+          prod => prod.id === this.id
+        );
+        const updatedProducts = [...products];
+        updatedProducts[existingProductIndex] = this;
+        writeProductsInFile(productDataPath, updatedProducts);
+      } else {
+        this.id = Math.random().toString();
+        products.push(this);
+        writeProductsInFile(productDataPath, products);
+      }     
     });
   }
 
