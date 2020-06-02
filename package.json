@@ -1,0 +1,20 @@
+{
+  "name": "node-intro",
+  "version": "1.0.0",
+  "description": "A simple shop application implemented using Node and the MVC pattern",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": "https://github.com/gvgesanto2/node-intro.git",
+  "author": "Gabriel Santo",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
