@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 // local modules imports
 const shopRoutes = require('./routes/shop.routes');
+const adminRoutes = require('./routes/admin.routes.js');
 const errorCtrl = require('./controllers/error.controller');
 
 // initialize the express library
@@ -21,7 +22,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// it listens for every request that starts with the root path '/'
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 // it shows a 404 page for the requests that didn't match any of the other routes

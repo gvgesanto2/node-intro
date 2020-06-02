@@ -20,9 +20,26 @@ const getProductsFromFile = (filePath, cb) => {
   });
 };
 
+const writeProductsInFile = (filePath, products, errorHandler) => {
+  fs.writeFile(
+    filePath,
+    JSON.stringify(products),
+    errorHandler || function (err) {
+      console.log(err);
+    }
+  );
+}
+
 class Product {
   constructor(title) {
     this.title = title;
+  }
+
+  save() {
+    getProductsFromFile(productDataPath, products => {
+      products.push(this);
+      writeProductsInFile(productDataPath, products);
+    });
   }
 
   static fetchAll(cb) {
