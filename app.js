@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const shopRoutes = require('./routes/shop.routes');
 const adminRoutes = require('./routes/admin.routes.js');
 const errorCtrl = require('./controllers/error.controller');
-const mongoConnect = require('./utils/db.utils');
+const { mongoConnect } = require('./utils/db.utils');
 
 // initialize the express library
 const app = express();
@@ -30,8 +30,7 @@ app.use(shopRoutes);
 app.use(errorCtrl.get404);
 
 // it starts the server listening on port 3000
-mongoConnect(client => {
-  console.log(client);
+mongoConnect(() => {
   app.listen(3000, () => {
     console.log("Server listening on port 3000");
   });

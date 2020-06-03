@@ -1,38 +1,9 @@
-const fs = require('fs');
+const mongodb = require('mongodb');
 
-const path = require('path');
-
-const { rootDir } = require('../utils/path.utils');
-
-const productDataPath = path.join(
-  rootDir,
-  "data",
-  "products.json"
-);
-
-const getProductsFromFile = (filePath, cb) => {
-  fs.readFile(filePath, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
-
-const writeProductsInFile = (filePath, products, errorHandler) => {
-  fs.writeFile(
-    filePath,
-    JSON.stringify(products),
-    errorHandler || function (err) {
-      console.log(err);
-    }
-  );
-}
+const { getDb } = require('../utils/db.utils');
 
 class Product {
-  constructor(id, title, imageUrl, price, description) {
-    this.id = id;
+  constructor({ title, imageUrl, price, description }) {
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -40,24 +11,35 @@ class Product {
   }
 
   save() {
-    getProductsFromFile(productDataPath, products => {
-      if(this.id) {
-        const existingProductIndex = products.findIndex(
-          prod => prod.id === this.id
-        );
-        const updatedProducts = [...products];
-        updatedProducts[existingProductIndex] = this;
-        writeProductsInFile(productDataPath, updatedProducts);
-      } else {
-        this.id = Math.random().toString();
-        products.push(this);
-        writeProductsInFile(productDataPath, products);
-      }     
-    });
+    const db = getDb();
+    return db ?
+      db
+        .collection("products")
+        .insertOne(this)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        }) :
+      null;
   }
 
-  static fetchAll(cb) {
-    getProductsFromFile(productDataPath, cb);
+  static fetchAll() {
+    const db = getDb();
+    return db ?
+      db
+        .collection("products")
+        .find()
+        .toArray()
+        .then(products => {
+          console.log(products);
+          return products;
+        })
+        .catch(err => {
+          console.log(err);
+        }) :
+      null;
   }
 }
 
