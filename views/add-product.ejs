@@ -7,10 +7,25 @@
   <%- include('includes/content/navbar.ejs') %> 
 
   <main>
-    <form action="/admin/add-product" method="POST" class="product-form">
+    <form 
+      action="/admin/add-product" 
+      method="POST" 
+      class="product-form"
+    >
       <div class="form-control">
         <label for="title">Title</label>
         <input type="text" name="title" id="title">
+        <label for="imageUrl">Image URL</label>
+        <input type="text" name="imageUrl" id="imageUrl">
+        <label for="price">Price</label>
+        <input 
+          type="number" 
+          name="price" 
+          id="price" 
+          step="0.01"
+        >
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description">
       </div>
 
       <button class="btn" type="submit">Add Product</button>
