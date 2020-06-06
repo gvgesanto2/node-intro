@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
 
-const { getDb } = require('../utils/db.utils');
+const { getDb, convertToMongoId } = require("../utils/db.utils");
 
 class Product {
   constructor({ title, imageUrl, price, description }) {
@@ -40,6 +40,22 @@ class Product {
           console.log(err);
         }) :
       null;
+  }
+
+  static findById(productId) {
+    const db = getDb();
+    return db
+      ? db
+          .collection("products")
+          .find({ _id: convertToMongoId(productId) })
+          .next()
+          .then((product) => {
+            return product;
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      : null;
   }
 }
 

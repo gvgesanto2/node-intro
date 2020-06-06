@@ -22,3 +22,7 @@ exports.getDb = () => {
   return _db;
 }
 
+exports.convertToMongoId = id => {
+  return new mongodb.ObjectId(id);
+}
+
